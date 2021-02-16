@@ -17,18 +17,20 @@ class CalculateViewController: UIViewController {
     @IBOutlet weak var splitNumberLabel: UILabel!
     
     var tip = 0.0
-    var numberOfPeople = "2"
-    
+    var numberOfPeople = 2
+    var split = 0.0
 
     @IBAction func tipChanged(_ sender: UIButton) {
+        billTextField.endEditing(true)
+        
         zeroPctButton.isSelected = false
         tenPctButton.isSelected = false
         twentyPctButton.isSelected = false
         
         sender.isSelected = true
         
-        let selectedTitle = sender.currentTitle!
-        let stringifiedValue = String(selectedTitle.dropLast())
+        let selectedText = sender.currentTitle!
+        let stringifiedValue = String(selectedText.dropLast())
         let rawTipValue = Double(stringifiedValue)!
         
         tip = rawTipValue / 100
@@ -37,13 +39,21 @@ class CalculateViewController: UIViewController {
     
     
     @IBAction func stepperValueChanged(_ sender: UIStepper) {
-        numberOfPeople = String(format: "%.0f", sender.value)
-        splitNumberLabel.text = numberOfPeople
+        numberOfPeople = Int(sender.value)
+        splitNumberLabel.text = String(numberOfPeople)
     }
     
     
     @IBAction func calculatePressed(_ sender: UIButton) {
-        print(numberOfPeople)
+    
+        let billTotalText = billTextField.text!
+        if (billTotalText != ""){
+            let billTotal = Double(billTotalText)!
+            split = billTotal * (tip + 1) / Double(numberOfPeople)
+            print(String(format: "%.2f", split))
+        }
+        
+        
     }
     
 }
